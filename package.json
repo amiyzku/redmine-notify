@@ -1,5 +1,5 @@
 {
-  "name": "redmine-amplifier",
+  "name": "redmine-notify",
   "private": true,
   "version": "0.1.1",
   "type": "module",
@@ -40,10 +40,7 @@
     "@mui/x-data-grid": "^7.6.1",
     "@vitejs/plugin-react": "^4.3.0",
     "linkedom": "^0.18.2",
-    "lodash": "^4.17.21",
     "react": "^18.3.1",
-    "react-dom": "^18.3.1",
-    "uuid": "^9.0.1",
-    "zod": "^3.23.8"
+    "react-dom": "^18.3.1"
   }
 }
