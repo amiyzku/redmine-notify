@@ -1,0 +1,36 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build
+        run: npm run prd
+
+      - name: Compress
+        run: zip -r dist.zip dist
+
+      - name: Create release draft
+        uses: softprops/action-gh-release@v1
+        with:
+          draft: true
+          token: ${{ secrets.TOKEN_FOR_RELEASE }}
+          files: dist.zip
