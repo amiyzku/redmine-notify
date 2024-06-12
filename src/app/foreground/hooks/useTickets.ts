@@ -64,25 +64,43 @@ const useTickets = () => {
   }
 
   const activateTickets = async (uris: string[]) => {
+    const successfulResults: TicketData[] = []
     for (const uri of uris) {
       const activateResult = await ticketUseCase.update(uri, { notificationStatus: 'enable' })
       if (activateResult instanceof ErrorMessage) {
         showAlert(activateResult.displayText, 'error')
         return
       }
-      setTickets(tickets.map((prev) => (prev.uri === uri ? activateResult : prev)))
+      successfulResults.push(activateResult)
     }
+
+    setTickets((prev) => {
+      return prev.map((ticket) => {
+        const index = successfulResults.findIndex((t) => t.uri === ticket.uri)
+        if (index === -1) return ticket
+        return successfulResults[index]
+      })
+    })
   }
 
   const inactivateTickets = async (uris: string[]) => {
+    const successfulResults: TicketData[] = []
     for (const uri of uris) {
       const inactivateResult = await ticketUseCase.update(uri, { notificationStatus: 'disable' })
       if (inactivateResult instanceof ErrorMessage) {
         showAlert(inactivateResult.displayText, 'error')
         return
       }
-      setTickets(tickets.map((prev) => (prev.uri === uri ? inactivateResult : prev)))
+      successfulResults.push(inactivateResult)
     }
+
+    setTickets((prev) => {
+      return prev.map((ticket) => {
+        const index = successfulResults.findIndex((t) => t.uri === ticket.uri)
+        if (index === -1) return ticket
+        return successfulResults[index]
+      })
+    })
   }
 
   return { tickets, addTicket, deleteTickets, activateTickets, inactivateTickets }
